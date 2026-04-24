@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Faro — Your financial lighthouse</title>
+<meta name="description" content="Upload your bank statement and get a warm, personalized view of where your money actually goes.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Warm, parchment-feeling palette */
+  --bg:#FBF8F3;
+  --surface:#FFFFFF;
+  --surface-warm:#FDFAF5;
+  --ink:#1F1B17;
+  --ink-2:#403A33;
+  --ink-3:#76706A;
+  --ink-4:#A8A29A;
+  --line:rgba(31,27,23,0.08);
+  --line-2:rgba(31,27,23,0.15);
+  
+  --faro:#1E4D6B;
+  --faro-mid:#2E6B94;
+  --faro-soft:#EDF3F8;
+  --faro-glow:#F5F9FC;
+  
+  --warm:#C8692D;
+  --warm-soft:#FCEFE4;
+  --sage:#4C7159;
+  --sage-soft:#E8EFE9;
+  --rose:#A14556;
+  --rose-soft:#F7E8EB;
+  --amber:#B0791B;
+  --amber-soft:#F7EEDA;
+  --lavender:#6B5D8F;
+  --lavender-soft:#EEEAF2;
+
+  --serif:'Fraunces',Georgia,serif;
+  --sans:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  --r:10px;
+  --r-lg:16px;
+  --r-xl:22px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;min-height:100vh;}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;}
+a{color:inherit;}
+
+.page{max-width:720px;margin:0 auto;padding:2rem 1.25rem 5rem;}
+
+/* ── HEADER ── */
+.header{display:flex;align-items:flex-end;gap:10px;margin-bottom:2.5rem;}
+.beacon{display:flex;flex-direction:column;align-items:center;gap:1px;margin-bottom:8px;}
+.b-glow{width:20px;height:9px;background:#BBDAF0;border-radius:50%;}
+.b-top{width:13px;height:7px;background:var(--faro-mid);border-radius:3px 3px 0 0;}
+.b-base{width:8px;height:16px;background:var(--faro);border-radius:2px 2px 0 0;}
+.logo{font-family:var(--serif);font-size:36px;font-weight:500;letter-spacing:-1.2px;line-height:1;}
+.logo-dot{color:var(--faro-mid);}
+.tagline{font-size:12px;color:var(--ink-3);margin-left:auto;font-style:italic;align-self:flex-end;margin-bottom:10px;}
+
+/* ── HERO COPY (shown only before upload) ── */
+.hero-intro{margin-bottom:2rem;}
+.hero-title{
+  font-family:var(--serif);font-size:32px;line-height:1.2;font-weight:500;
+  letter-spacing:-0.8px;margin-bottom:10px;color:var(--ink);
+}
+.hero-title em{color:var(--faro);font-style:italic;}
+.hero-sub{font-size:15px;color:var(--ink-3);line-height:1.6;max-width:500px;}
+
+/* ── UPLOAD ── */
+.upload{
+  background:var(--surface);border:1px dashed var(--line-2);border-radius:var(--r-xl);
+  padding:3rem 2rem;text-align:center;cursor:pointer;
+  transition:all 0.25s ease;
+  position:relative;overflow:hidden;
+  margin-bottom:1.5rem;
+}
+.upload:hover,.upload.drag{border-color:var(--faro-mid);background:var(--faro-glow);transform:translateY(-1px);}
+.upload-ring{
+  width:72px;height:72px;border-radius:50%;
+  background:var(--faro-soft);display:flex;align-items:center;justify-content:center;
+  margin:0 auto 1.25rem;transition:transform 0.3s;
+}
+.upload:hover .upload-ring{transform:scale(1.05);}
+.upload-title{font-family:var(--serif);font-size:22px;font-weight:500;letter-spacing:-0.3px;margin-bottom:8px;}
+.upload-sub{font-size:13px;color:var(--ink-3);line-height:1.6;margin-bottom:1.5rem;max-width:400px;margin-left:auto;margin-right:auto;}
+.btn{background:var(--faro);color:#fff;border-radius:999px;padding:11px 24px;font-size:13px;font-weight:500;transition:all 0.15s;letter-spacing:0.2px;}
+.btn:hover{background:var(--faro-mid);transform:translateY(-1px);box-shadow:0 4px 12px rgba(30,77,107,0.15);}
+.btn-ghost{background:transparent;color:var(--ink-2);border:1px solid var(--line-2);border-radius:999px;padding:10px 20px;font-size:13px;font-weight:500;transition:all 0.15s;}
+.btn-ghost:hover{background:var(--surface-warm);border-color:var(--ink-3);}
+.fmt-row{margin-top:1.25rem;display:flex;gap:6px;justify-content:center;flex-wrap:wrap;}
+.fmt{font-size:10px;padding:3px 10px;border:1px solid var(--line);border-radius:999px;color:var(--ink-3);background:var(--surface);letter-spacing:0.3px;}
+input[type=file]{display:none;}
+
+/* ── ANALYZING ── */
+.analyzing{
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--r-xl);
+  padding:3rem 2rem;text-align:center;display:none;margin-bottom:1.5rem;
+}
+.analyzing.active{display:block;animation:fadeIn 0.4s ease;}
+.pulse-ring{
+  width:64px;height:64px;border-radius:50%;
+  background:var(--faro-soft);margin:0 auto 1.25rem;
+  position:relative;
+  animation:pulseRing 2s ease-in-out infinite;
+}
+.pulse-ring::after{
+  content:'';position:absolute;inset:8px;border-radius:50%;
+  background:var(--faro-glow);
+  animation:pulseInner 2s ease-in-out infinite;
+}
+@keyframes pulseRing{
+  0%,100%{transform:scale(1);opacity:1;}
+  50%{transform:scale(1.08);opacity:0.8;}
+}
+@keyframes pulseInner{
+  0%,100%{transform:scale(1);}
+  50%{transform:scale(0.85);}
+}
+.analyzing-title{font-family:var(--serif);font-size:22px;font-weight:500;letter-spacing:-0.3px;margin-bottom:6px;}
+.analyzing-msg{font-size:13px;color:var(--ink-3);min-height:18px;transition:opacity 0.3s;}
+
+/* ── ERROR ── */
+.error{
+  background:var(--rose-soft);border:1px solid rgba(161,69,86,0.2);
+  border-radius:var(--r-lg);padding:1rem 1.25rem;margin-bottom:1.5rem;
+  display:none;font-size:13px;color:#6B2935;line-height:1.5;
+}
+.error.active{display:block;animation:fadeIn 0.3s;}
+
+/* ── REPORT ── */
+.report{display:none;}
+.report.active{display:block;animation:fadeIn 0.6s ease;}
+@keyframes fadeIn{
+  from{opacity:0;transform:translateY(10px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+/* Hero card */
+.report-hero{
+  background:linear-gradient(160deg, #1E4D6B 0%, #2E6B94 100%);
+  border-radius:var(--r-xl);padding:2rem 1.75rem 1.75rem;margin-bottom:1.25rem;
+  color:#fff;position:relative;overflow:hidden;
+}
+.report-hero::before{
+  content:'';position:absolute;top:-60px;right:-60px;
+  width:220px;height:220px;border-radius:50%;
+  background:rgba(255,255,255,0.04);
+}
+.report-hero::after{
+  content:'';position:absolute;bottom:-40px;left:-40px;
+  width:140px;height:140px;border-radius:50%;
+  background:rgba(255,255,255,0.03);
+}
+.hero-top{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;position:relative;margin-bottom:1.25rem;}
+.hero-period{font-size:11px;color:rgba(255,255,255,0.55);letter-spacing:0.6px;text-transform:uppercase;margin-bottom:8px;}
+.hero-greeting{font-family:var(--serif);font-size:26px;font-weight:500;line-height:1.25;letter-spacing:-0.5px;color:#fff;}
+.score-circle{
+  width:82px;height:82px;border-radius:50%;
+  background:rgba(255,255,255,0.08);
+  border:1.5px solid rgba(255,255,255,0.15);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.score-num{font-family:var(--serif);font-size:32px;font-weight:500;line-height:1;letter-spacing:-0.5px;}
+.score-lbl{font-size:9px;color:rgba(255,255,255,0.65);letter-spacing:0.6px;text-transform:uppercase;margin-top:3px;}
+
+.diagnosis{
+  background:rgba(255,255,255,0.08);border-radius:var(--r-lg);padding:1.1rem 1.25rem;
+  position:relative;backdrop-filter:blur(10px);
+}
+.diag-text{font-family:var(--serif);font-size:16px;line-height:1.5;font-style:italic;color:#fff;margin-bottom:8px;font-weight:400;}
+.diag-body{font-size:12.5px;color:rgba(255,255,255,0.82);line-height:1.65;}
+
+/* Section heading */
+.sec{margin-top:2rem;}
+.sec-h{
+  font-family:var(--serif);font-size:19px;font-weight:500;letter-spacing:-0.3px;
+  margin-bottom:1rem;display:flex;align-items:baseline;justify-content:space-between;
+}
+.sec-h-sub{font-size:11px;color:var(--ink-3);font-style:italic;font-family:var(--sans);font-weight:400;}
+
+/* Cash flow visualizer */
+.cf-card{
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);
+  padding:1.25rem 1.4rem;
+}
+.cf-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:1rem;flex-wrap:wrap;gap:8px;}
+.cf-net{font-family:var(--serif);font-size:26px;font-weight:500;letter-spacing:-0.4px;}
+.cf-net.surplus{color:var(--sage);}
+.cf-net.deficit{color:var(--warm);}
+.cf-net.breakeven{color:var(--ink-2);}
+.cf-msg{font-size:12px;color:var(--ink-3);line-height:1.5;max-width:360px;text-align:right;}
+.cf-bar{height:36px;background:#F3EEE6;border-radius:var(--r);overflow:hidden;display:flex;margin-bottom:12px;}
+.cf-seg{display:flex;align-items:center;padding:0 10px;font-size:10px;font-weight:500;color:#fff;min-width:0;transition:all 0.6s cubic-bezier(0.4,0,0.2,1);white-space:nowrap;overflow:hidden;}
+.cf-legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--ink-3);}
+.cf-leg-dot{width:8px;height:8px;border-radius:2px;display:inline-block;margin-right:5px;vertical-align:middle;}
+
+/* Metric tiles */
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:10px;}
+.metric-tile{
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);
+  padding:14px 16px;transition:transform 0.2s;
+}
+.metric-tile:hover{transform:translateY(-2px);border-color:var(--line-2);}
+.metric-lbl{font-size:10px;color:var(--ink-3);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:5px;font-weight:500;}
+.metric-val{font-family:var(--serif);font-size:26px;font-weight:500;letter-spacing:-0.4px;color:var(--ink);}
+.metric-sub{font-size:11px;color:var(--ink-3);margin-top:3px;}
+
+/* Interactive categories */
+.cats{
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);
+  overflow:hidden;
+}
+.cat{
+  display:flex;align-items:center;gap:12px;padding:13px 18px;
+  border-bottom:1px solid var(--line);cursor:pointer;
+  transition:background 0.2s;
+}
+.cat:last-child{border-bottom:none;}
+.cat:hover{background:var(--surface-warm);}
+.cat.open{background:var(--surface-warm);}
+.cat-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.cat-name{font-size:14px;color:var(--ink);flex:1;min-width:0;font-weight:500;}
+.cat-count{font-size:11px;color:var(--ink-3);font-weight:400;margin-left:4px;}
+.cat-bar-wrap{flex:1.2;height:5px;background:#F3EEE6;border-radius:3px;overflow:hidden;max-width:120px;}
+.cat-bar{height:100%;border-radius:3px;transition:width 1s cubic-bezier(0.4,0,0.2,1);}
+.cat-pct{font-size:11px;color:var(--ink-3);min-width:32px;text-align:right;font-weight:500;}
+.cat-amt{font-family:var(--serif);font-size:16px;font-weight:500;color:var(--ink);min-width:66px;text-align:right;letter-spacing:-0.3px;}
+.cat-caret{color:var(--ink-4);font-size:10px;transition:transform 0.3s;margin-left:4px;}
+.cat.open .cat-caret{transform:rotate(90deg);}
+.cat-detail{
+  display:none;padding:0 18px 14px 40px;font-size:12px;color:var(--ink-3);
+  background:var(--surface-warm);border-bottom:1px solid var(--line);
+  animation:slideDown 0.3s ease;
+}
+.cat-detail.open{display:block;}
+.cat-detail-label{font-size:10px;text-transform:uppercase;letter-spacing:0.6px;color:var(--ink-4);margin-bottom:6px;}
+.cat-merchant{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px dashed var(--line);}
+.cat-merchant:last-child{border-bottom:none;}
+@keyframes slideDown{from{opacity:0;max-height:0;}to{opacity:1;max-height:200px;}}
+
+/* Insights */
+.insights{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;}
+.ins{
+  border-radius:var(--r-lg);padding:16px;border:1px solid transparent;
+  transition:transform 0.2s;cursor:pointer;
+}
+.ins:hover{transform:translateY(-2px);}
+.ins.alert{background:var(--warm-soft);border-color:rgba(200,105,45,0.2);}
+.ins.warn{background:var(--amber-soft);border-color:rgba(176,121,27,0.2);}
+.ins.good{background:var(--sage-soft);border-color:rgba(76,113,89,0.2);}
+.ins.info{background:var(--faro-soft);border-color:rgba(46,107,148,0.2);}
+.ins.note{background:var(--lavender-soft);border-color:rgba(107,93,143,0.2);}
+.ins-badge{font-size:10px;font-weight:500;letter-spacing:0.5px;padding:3px 9px;border-radius:999px;display:inline-block;margin-bottom:8px;}
+.ins.alert .ins-badge{background:rgba(200,105,45,0.15);color:#7A3C13;}
+.ins.warn .ins-badge{background:rgba(176,121,27,0.18);color:#6D4810;}
+.ins.good .ins-badge{background:rgba(76,113,89,0.18);color:#2C4834;}
+.ins.info .ins-badge{background:rgba(46,107,148,0.15);color:#1A3E56;}
+.ins.note .ins-badge{background:rgba(107,93,143,0.18);color:#3F355A;}
+.ins-title{font-family:var(--serif);font-size:15px;font-weight:500;line-height:1.35;margin-bottom:6px;letter-spacing:-0.2px;}
+.ins.alert .ins-title,.ins.alert .ins-body{color:#6B2F0E;}
+.ins.warn .ins-title,.ins.warn .ins-body{color:#5A3A0C;}
+.ins.good .ins-title,.ins.good .ins-body{color:#263E2A;}
+.ins.info .ins-title,.ins.info .ins-body{color:#163449;}
+.ins.note .ins-title,.ins.note .ins-body{color:#342C4B;}
+.ins-body{font-size:12.5px;line-height:1.6;}
+.ins-evidence{
+  font-size:10.5px;margin-top:10px;padding-top:10px;border-top:1px dashed currentColor;
+  opacity:0.55;font-family:'SF Mono',Menlo,monospace;
+}
+.ins-ask{
+  font-size:11px;margin-top:10px;color:var(--faro-mid);font-weight:500;
+  display:inline-flex;align-items:center;gap:4px;cursor:pointer;
+  padding:4px 10px;border-radius:999px;background:rgba(255,255,255,0.5);
+  transition:background 0.15s;
+}
+.ins-ask:hover{background:rgba(255,255,255,0.9);}
+
+/* Action plan */
+.actions{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden;}
+.action{display:flex;gap:14px;padding:16px 18px;border-bottom:1px solid var(--line);transition:background 0.2s;}
+.action:last-child{border-bottom:none;}
+.action:hover{background:var(--surface-warm);}
+.action-check{
+  width:26px;height:26px;border-radius:50%;border:1.5px solid var(--line-2);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  margin-top:2px;cursor:pointer;transition:all 0.2s;
+  background:var(--surface);
+}
+.action-check:hover{border-color:var(--faro-mid);}
+.action-check.checked{background:var(--sage);border-color:var(--sage);}
+.action-check.checked::after{content:'✓';color:#fff;font-size:14px;font-weight:500;}
+.action-body{flex:1;min-width:0;}
+.action-body.checked .action-title{text-decoration:line-through;color:var(--ink-4);}
+.action-title{font-family:var(--serif);font-size:15.5px;font-weight:500;line-height:1.35;letter-spacing:-0.2px;margin-bottom:4px;transition:all 0.3s;}
+.action-desc{font-size:12.5px;color:var(--ink-2);line-height:1.6;}
+.action-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;}
+.tag{font-size:10px;font-weight:500;padding:3px 10px;border-radius:999px;letter-spacing:0.2px;}
+.tag-impact{background:var(--sage-soft);color:#2C4834;}
+.tag-diff{background:var(--amber-soft);color:#6D4810;}
+.tag-time{background:var(--faro-soft);color:#1A3E56;}
+
+/* Goal card */
+.goal{
+  background:linear-gradient(135deg, var(--sage-soft) 0%, var(--faro-soft) 100%);
+  border:1px solid var(--line);border-radius:var(--r-lg);
+  padding:1.75rem;text-align:center;
+}
+.goal-title{font-family:var(--serif);font-size:20px;font-weight:500;letter-spacing:-0.3px;margin-bottom:8px;}
+.goal-desc{font-size:13px;color:var(--ink-2);line-height:1.6;margin-bottom:1.25rem;max-width:480px;margin-left:auto;margin-right:auto;}
+.goal-ctas{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;}
+.goal-btn{background:var(--surface);border:1px solid var(--line-2);padding:9px 16px;border-radius:999px;font-size:12px;font-weight:500;transition:all 0.15s;}
+.goal-btn:hover{background:var(--faro);color:#fff;border-color:var(--faro);transform:translateY(-1px);}
+.goal-btn.primary{background:var(--faro);color:#fff;border-color:var(--faro);}
+.goal-btn.primary:hover{background:var(--faro-mid);}
+
+/* Closing */
+.closing{
+  font-family:var(--serif);font-style:italic;font-size:16px;
+  text-align:center;color:var(--ink-2);line-height:1.55;
+  padding:1.5rem 1rem 0;max-width:460px;margin:0 auto;
+}
+
+/* Footer actions */
+.foot{
+  display:flex;gap:10px;flex-wrap:wrap;justify-content:center;
+  margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--line);
+}
+
+/* Coaching question box */
+.coach-box{
+  display:none;background:var(--faro-soft);border:1px solid rgba(46,107,148,0.15);
+  border-radius:var(--r-lg);padding:1.25rem;margin-top:1rem;
+}
+.coach-box.active{display:block;animation:fadeIn 0.3s;}
+.coach-q{font-family:var(--serif);font-size:14px;font-style:italic;color:var(--faro);margin-bottom:10px;}
+.coach-a{font-size:13px;color:var(--ink-2);line-height:1.65;}
+
+/* Privacy */
+.privacy{margin-top:2rem;text-align:center;font-size:11px;color:var(--ink-4);display:flex;align-items:center;justify-content:center;gap:5px;}
+
+@media (max-width:500px){
+  .page{padding:1.5rem 1rem 4rem;}
+  .upload{padding:2.5rem 1.25rem;}
+  .report-hero{padding:1.5rem 1.25rem 1.25rem;}
+  .hero-greeting{font-size:22px;}
+  .hero-title{font-size:26px;}
+  .score-circle{width:70px;height:70px;}
+  .score-num{font-size:28px;}
+  .cf-msg{text-align:left;}
+  .cat-bar-wrap{display:none;}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="beacon">
+      <div class="b-glow"></div>
+      <div class="b-top"></div>
+      <div class="b-base"></div>
+    </div>
+    <h1 class="logo">faro<span class="logo-dot">.</span></h1>
+    <div class="tagline">a gentle look at your money</div>
+  </header>
+
+  <!-- PRE-UPLOAD HERO -->
+  <section class="hero-intro" id="heroIntro">
+    <h2 class="hero-title">Upload a statement. Get a <em>warm, honest look</em> at where your money really goes.</h2>
+    <p class="hero-sub">Faro reads your bank statement and gently surfaces the patterns you might not see — the habits, the comforts, the things worth noticing. No judgment, just clarity.</p>
+  </section>
+
+  <!-- UPLOAD -->
+  <div class="upload" id="upload" onclick="document.getElementById('fileIn').click()">
+    <div class="upload-ring">
+      <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+        <rect x="5" y="7" width="16" height="20" rx="2" stroke="#2E6B94" stroke-width="1.5"/>
+        <path d="M13 14v8M10 17l3-3 3 3" stroke="#2E6B94" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="25" cy="8" r="5" fill="#F5F9FC" stroke="#2E6B94" stroke-width="1.5"/>
+        <path d="M25 6v4M23 8h4" stroke="#2E6B94" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="upload-title">Share your bank statement</div>
+    <div class="upload-sub">Drop a PDF, CSV, or text file. It's analyzed in seconds and never stored.</div>
+    <button class="btn" onclick="event.stopPropagation();document.getElementById('fileIn').click()">Choose file</button>
+    <input type="file" id="fileIn" accept=".pdf,.csv,.txt" onchange="handleFile(event)">
+    <div class="fmt-row">
+      <span class="fmt">PDF</span>
+      <span class="fmt">CSV</span>
+      <span class="fmt">TXT</span>
+    </div>
+  </div>
+
+  <!-- ANALYZING -->
+  <div class="analyzing" id="analyzing">
+    <div class="pulse-ring"></div>
+    <div class="analyzing-title">Taking a careful look</div>
+    <div class="analyzing-msg" id="analyzingMsg">Reading your statement...</div>
+  </div>
+
+  <!-- ERROR -->
+  <div class="error" id="error"></div>
+
+  <!-- REPORT -->
+  <div class="report" id="report"></div>
+
+  <div class="privacy">🔒 Your statement is analyzed in memory and immediately discarded. Never stored, never shared.</div>
+
+</div>
+
+<script>
+// ── MESSAGES during analysis (rotating, warm) ──
+const loadingMessages = [
+  "Reading your statement carefully...",
+  "Noticing where your money flows...",
+  "Finding the patterns that matter...",
+  "Understanding your rhythm with money...",
+  "Putting together your lighthouse view..."
+];
+let msgIndex = 0, msgInterval;
+
+function rotateMessages() {
+  msgInterval = setInterval(() => {
+    msgIndex = (msgIndex + 1) % loadingMessages.length;
+    const el = document.getElementById('analyzingMsg');
+    el.style.opacity = '0';
+    setTimeout(() => {
+      el.textContent = loadingMessages[msgIndex];
+      el.style.opacity = '1';
+    }, 200);
+  }, 2800);
+}
+function stopMessages() { clearInterval(msgInterval); }
+
+// ── FILE HANDLING ──
+async function handleFile(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  if (file.size > 4 * 1024 * 1024) {
+    showError("That file is a bit large. Please try one under 4MB.");
+    return;
+  }
+
+  showAnalyzing();
+
+  try {
+    // Read file as base64
+    const buffer = await file.arrayBuffer();
+    const bytes = new Uint8Array(buffer);
+    let binary = '';
+    for (let i = 0; i < bytes.byteLength; i++) binary += String.fromCharCode(bytes[i]);
+    const base64 = btoa(binary);
+
+    // Call our secure backend
+    const response = await fetch('/api/analyze', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        fileData: base64,
+        fileType: file.type,
+        fileName: file.name
+      })
+    });
+
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || 'Analysis failed');
+
+    renderReport(data.report);
+
+  } catch (err) {
+    showError(err.message || "Something went wrong. Please try again.");
+  }
+}
+
+// ── RENDER ──
+function renderReport(r) {
+  stopMessages();
+  document.getElementById('analyzing').classList.remove('active');
+  document.getElementById('upload').style.display = 'none';
+  document.getElementById('heroIntro').style.display = 'none';
+
+  const totalSpent = r.metrics.totalSpent || 0;
+  const cats = r.categories || [];
+  const maxAmt = Math.max(...cats.map(c => c.amount), 1);
+
+  // Categories (interactive, expandable)
+  const catHTML = cats.map((c, i) => {
+    const pct = Math.round((c.amount / totalSpent) * 100) || 0;
+    const barW = Math.round((c.amount / maxAmt) * 100);
+    const merchants = (c.topMerchants || []).map(m => {
+      const parts = m.match(/^(.+?)\s*\$?([\d,.]+)$/);
+      if (parts) return `<div class="cat-merchant"><span>${parts[1].trim()}</span><span>$${parts[2]}</span></div>`;
+      return `<div class="cat-merchant"><span>${m}</span></div>`;
+    }).join('');
+    return `
+      <div class="cat" data-idx="${i}" onclick="toggleCat(${i})">
+        <div class="cat-dot" style="background:${c.color}"></div>
+        <div class="cat-name">${c.name}<span class="cat-count"> · ${c.transactionCount}</span></div>
+        <div class="cat-bar-wrap"><div class="cat-bar" style="width:${barW}%;background:${c.color}"></div></div>
+        <div class="cat-pct" style="color:${c.color}">${pct}%</div>
+        <div class="cat-amt">$${Math.round(c.amount).toLocaleString()}</div>
+        <div class="cat-caret">▶</div>
+      </div>
+      <div class="cat-detail" id="cat-det-${i}">
+        <div class="cat-detail-label">Top merchants</div>
+        ${merchants || '<div class="cat-merchant"><span>No detail available</span></div>'}
+      </div>`;
+  }).join('');
+
+  // Insights
+  const insHTML = (r.insights || []).map((ins, i) => `
+    <div class="ins ${ins.type}">
+      <div class="ins-badge">${ins.badge}</div>
+      <div class="ins-title">${ins.title}</div>
+      <div class="ins-body">${ins.body}</div>
+      ${ins.evidence ? `<div class="ins-evidence">${ins.evidence}</div>` : ''}
+      <div class="ins-ask" onclick="askCoach('${escapeJs(ins.title)}')">Ask Faro about this →</div>
+    </div>`).join('');
+
+  // Actions
+  const actHTML = (r.actionPlan || []).map((a, i) => `
+    <div class="action">
+      <div class="action-check" id="check-${i}" onclick="toggleCheck(${i})"></div>
+      <div class="action-body" id="body-${i}">
+        <div class="action-title">${a.title}</div>
+        <div class="action-desc">${a.description}</div>
+        <div class="action-tags">
+          <span class="tag tag-impact">${a.impact}</span>
+          <span class="tag tag-diff">${a.difficulty}</span>
+          <span class="tag tag-time">${a.timeline}</span>
+        </div>
+      </div>
+    </div>`).join('');
+
+  // Cash flow segments
+  const cf = r.cashFlow;
+  const cfTotal = Math.max(cf.income || 0, (cf.spent || 0) + (cf.sentToOthers || 0), 1);
+  const spentPct = ((cf.spent || 0) / cfTotal) * 100;
+  const sentPct = ((cf.sentToOthers || 0) / cfTotal) * 100;
+  const leftPct = Math.max(0, 100 - spentPct - sentPct);
+
+  const cfSegs = `
+    ${spentPct > 0 ? `<div class="cf-seg" style="background:#C8692D;width:${spentPct}%">${spentPct > 8 ? '$' + Math.round(cf.spent).toLocaleString() + ' spent' : ''}</div>` : ''}
+    ${sentPct > 0 ? `<div class="cf-seg" style="background:#B0791B;width:${sentPct}%">${sentPct > 8 ? '$' + Math.round(cf.sentToOthers).toLocaleString() + ' shared' : ''}</div>` : ''}
+    ${leftPct > 0 ? `<div class="cf-seg" style="background:#4C7159;width:${leftPct}%">${leftPct > 8 ? 'remaining' : ''}</div>` : ''}
+  `;
+
+  const netDisplay = cf.net >= 0 ? `+$${Math.round(cf.net).toLocaleString()}` : `−$${Math.abs(Math.round(cf.net)).toLocaleString()}`;
+  const statusWord = cf.status === 'surplus' ? 'in the green' : cf.status === 'deficit' ? 'a tight month' : 'break-even';
+
+  // Greeting based on score
+  const greeting = r.habitScore >= 80 ? "You're in a really good rhythm." :
+                   r.habitScore >= 65 ? "You're doing a lot of things well." :
+                   r.habitScore >= 50 ? "There's real room to breathe here." :
+                   "Let's take this one step at a time.";
+
+  document.getElementById('report').innerHTML = `
+    <!-- HERO -->
+    <section class="report-hero">
+      <div class="hero-top">
+        <div>
+          <div class="hero-period">${r.period} · ${r.bank}${r._txCount ? ' · ' + r._txCount + ' transactions' : ''}</div>
+          <div class="hero-greeting">${greeting}</div>
+        </div>
+        <div class="score-circle">
+          <div class="score-num">${r.habitScore}</div>
+          <div class="score-lbl">habits</div>
+        </div>
+      </div>
+      <div class="diagnosis">
+        <div class="diag-text">"${r.diagnosisHeadline}"</div>
+        <div class="diag-body">${r.diagnosisBody}</div>
+      </div>
+    </section>
+
+    <!-- CASH FLOW -->
+    <section class="sec">
+      <h3 class="sec-h">The shape of your month <span class="sec-h-sub">what came in, what went out</span></h3>
+      <div class="cf-card">
+        <div class="cf-top">
+          <div class="cf-net ${cf.status}">${netDisplay}<span style="font-family:var(--sans);font-size:13px;font-weight:400;color:var(--ink-3);margin-left:8px;">${statusWord}</span></div>
+          <div class="cf-msg">${cf.runwayMessage}</div>
+        </div>
+        <div class="cf-bar">${cfSegs}</div>
+        <div class="cf-legend">
+          <span><span class="cf-leg-dot" style="background:#C8692D"></span>Spent</span>
+          ${cf.sentToOthers > 0 ? `<span><span class="cf-leg-dot" style="background:#B0791B"></span>Shared with people</span>` : ''}
+          ${leftPct > 0 ? `<span><span class="cf-leg-dot" style="background:#4C7159"></span>Remaining</span>` : ''}
+        </div>
+      </div>
+    </section>
+
+    <!-- METRICS -->
+    <section class="sec">
+      <h3 class="sec-h">The numbers <span class="sec-h-sub">nothing hidden</span></h3>
+      <div class="metrics">
+        <div class="metric-tile">
+          <div class="metric-lbl">Came in</div>
+          <div class="metric-val">$${Math.round(r.metrics.totalIncome || 0).toLocaleString()}</div>
+          <div class="metric-sub">this period</div>
+        </div>
+        <div class="metric-tile">
+          <div class="metric-lbl">Went out</div>
+          <div class="metric-val">$${Math.round(totalSpent).toLocaleString()}</div>
+          <div class="metric-sub">${r.metrics.totalTransactions} transactions</div>
+        </div>
+        ${r.metrics.sentToOthers > 0 ? `<div class="metric-tile">
+          <div class="metric-lbl">Shared</div>
+          <div class="metric-val">$${Math.round(r.metrics.sentToOthers).toLocaleString()}</div>
+          <div class="metric-sub">with people you care about</div>
+        </div>` : ''}
+        <div class="metric-tile">
+          <div class="metric-lbl">Typical purchase</div>
+          <div class="metric-val">$${Math.round(r.metrics.avgTransaction || 0)}</div>
+          <div class="metric-sub">per transaction</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CATEGORIES -->
+    <section class="sec">
+      <h3 class="sec-h">Where it went <span class="sec-h-sub">tap a row to see merchants</span></h3>
+      <div class="cats">${catHTML}</div>
+    </section>
+
+    <!-- PROJECTION -->
+    ${r.projection ? `<section class="sec">
+      <h3 class="sec-h">Looking ahead <span class="sec-h-sub">at this pace</span></h3>
+      <div class="cf-card">
+        <div style="font-family:var(--serif);font-size:18px;line-height:1.5;font-style:italic;color:var(--ink-2);">
+          "${r.projection.projectionNote}"
+        </div>
+        <div style="display:flex;gap:1.5rem;margin-top:1rem;flex-wrap:wrap;">
+          <div><div style="font-size:10px;color:var(--ink-3);text-transform:uppercase;letter-spacing:0.5px;">Annual pace</div><div style="font-family:var(--serif);font-size:22px;font-weight:500;">$${Math.round(r.projection.annualizedSpending).toLocaleString()}</div></div>
+          <div><div style="font-size:10px;color:var(--ink-3);text-transform:uppercase;letter-spacing:0.5px;">${r.projection.topCategoryName} alone</div><div style="font-family:var(--serif);font-size:22px;font-weight:500;">$${Math.round(r.projection.topCategoryAnnual).toLocaleString()}/yr</div></div>
+        </div>
+      </div>
+    </section>` : ''}
+
+    <!-- INSIGHTS -->
+    <section class="sec">
+      <h3 class="sec-h">What Faro noticed <span class="sec-h-sub">tap any card to ask a question</span></h3>
+      <div class="insights">${insHTML}</div>
+      <div class="coach-box" id="coachBox">
+        <div class="coach-q" id="coachQ"></div>
+        <div class="coach-a" id="coachA"></div>
+      </div>
+    </section>
+
+    <!-- ACTION PLAN -->
+    <section class="sec">
+      <h3 class="sec-h">A gentle path forward <span class="sec-h-sub">check off as you go</span></h3>
+      <div class="actions">${actHTML}</div>
+    </section>
+
+    <!-- GOAL -->
+    ${r.goalSuggestion ? `<section class="sec">
+      <h3 class="sec-h">One goal worth considering</h3>
+      <div class="goal">
+        <div class="goal-title">${r.goalSuggestion.goalTitle}</div>
+        <div class="goal-desc">${r.goalSuggestion.goalDescription}</div>
+        <div class="goal-ctas">
+          <button class="goal-btn primary" onclick="commitGoal()">✓ I'll try this</button>
+          <button class="goal-btn" onclick="remindMe()">Remind me weekly</button>
+        </div>
+      </div>
+    </section>` : ''}
+
+    <!-- CLOSING -->
+    ${r.closingWarmth ? `<div class="closing">${r.closingWarmth}</div>` : ''}
+
+    <!-- FOOTER -->
+    <div class="foot">
+      <button class="btn-ghost" onclick="resetApp()">← Analyze another</button>
+      <button class="btn-ghost" onclick="window.print()">Save as PDF</button>
+    </div>
+  `;
+
+  document.getElementById('report').classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── INTERACTIVE BEHAVIORS ──
+function toggleCat(i) {
+  const row = document.querySelector(`.cat[data-idx="${i}"]`);
+  const det = document.getElementById(`cat-det-${i}`);
+  row.classList.toggle('open');
+  det.classList.toggle('open');
+}
+
+function toggleCheck(i) {
+  const check = document.getElementById('check-' + i);
+  const body = document.getElementById('body-' + i);
+  check.classList.toggle('checked');
+  body.classList.toggle('checked');
+}
+
+function askCoach(insightTitle) {
+  const box = document.getElementById('coachBox');
+  const q = document.getElementById('coachQ');
+  const a = document.getElementById('coachA');
+  box.classList.add('active');
+  q.textContent = `"${insightTitle}" — what can I do about this?`;
+  a.innerHTML = '<em>Faro is thinking...</em>';
+  box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  
+  // In V4 this would call a real coaching endpoint. For now, a warm placeholder.
+  setTimeout(() => {
+    a.innerHTML = `That's a great thing to get curious about. In a future version of Faro, I'll have a real conversation with you here about this specific pattern — asking you questions, sharing gentle strategies, and helping you find a path that feels right for you. For now, take a moment with the insight itself. The fact that you're noticing is already progress.`;
+  }, 1200);
+}
+
+function commitGoal() {
+  alert("Beautiful — goal tracking arrives in V4. For now, write this goal somewhere you'll see it daily.");
+}
+
+function remindMe() {
+  alert("Email reminders arrive in V4. For now, set a weekly calendar reminder to check in with yourself.");
+}
+
+function escapeJs(str) {
+  return String(str).replace(/'/g, "\\'").replace(/"/g, '&quot;');
+}
+
+// ── UI STATES ──
+function showAnalyzing() {
+  document.getElementById('error').classList.remove('active');
+  document.getElementById('upload').style.display = 'none';
+  document.getElementById('heroIntro').style.display = 'none';
+  document.getElementById('analyzing').classList.add('active');
+  document.getElementById('analyzingMsg').textContent = loadingMessages[0];
+  msgIndex = 0;
+  rotateMessages();
+}
+
+function showError(msg) {
+  stopMessages();
+  document.getElementById('analyzing').classList.remove('active');
+  document.getElementById('upload').style.display = 'block';
+  document.getElementById('heroIntro').style.display = 'block';
+  const el = document.getElementById('error');
+  el.textContent = msg;
+  el.classList.add('active');
+  document.getElementById('fileIn').value = '';
+}
+
+function resetApp() {
+  document.getElementById('report').classList.remove('active');
+  document.getElementById('report').innerHTML = '';
+  document.getElementById('upload').style.display = 'block';
+  document.getElementById('heroIntro').style.display = 'block';
+  document.getElementById('fileIn').value = '';
+  document.getElementById('error').classList.remove('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Drag & drop
+const up = document.getElementById('upload');
+up.addEventListener('dragover', e => { e.preventDefault(); up.classList.add('drag'); });
+up.addEventListener('dragleave', () => up.classList.remove('drag'));
+up.addEventListener('drop', e => {
+  e.preventDefault();
+  up.classList.remove('drag');
+  const file = e.dataTransfer.files[0];
+  if (file) { document.getElementById('fileIn').files = e.dataTransfer.files; handleFile({ target: { files: [file] } }); }
+});
+</script>
+</body>
+</html>

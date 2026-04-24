@@ -1,0 +1,9 @@
+{
+  "name": "faro",
+  "version": "3.0.0",
+  "description": "Your financial lighthouse",
+  "private": true,
+  "engines": {
+    "node": "20.x"
+  }
+}
