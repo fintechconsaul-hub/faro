@@ -63,7 +63,7 @@ a{color:inherit;text-decoration:none;}
 .login-promise{margin-top:2rem;display:flex;gap:1.5rem;justify-content:center;font-size:11px;color:var(--ink-4);flex-wrap:wrap;}
 .promise-item{display:flex;align-items:center;gap:5px;}
 
-/* APP HEADER */
+/* HEADER */
 .app-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.75rem;padding-top:0.5rem;}
 .brand-mini{display:flex;align-items:flex-end;gap:8px;}
 .beacon-mini{display:flex;flex-direction:column;align-items:center;gap:1px;margin-bottom:5px;}
@@ -77,23 +77,69 @@ a{color:inherit;text-decoration:none;}
 .user-avatar{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg, var(--faro), var(--faro-mid));color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;}
 .user-name{font-size:12px;font-weight:500;color:var(--ink-2);}
 
-/* STATS BAR */
+/* STATS */
 .stats-bar{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:1.5rem;}
 .stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:10px 12px;text-align:center;}
 .stat-value{font-family:var(--serif);font-size:18px;font-weight:600;letter-spacing:-0.3px;line-height:1;}
 .stat-label{font-size:9px;color:var(--ink-3);text-transform:uppercase;letter-spacing:0.5px;margin-top:4px;font-weight:500;}
 
-/* UPLOAD */
-.upload-card{background:var(--surface);border-radius:var(--r-xl);padding:2.5rem 1.75rem;text-align:center;cursor:pointer;border:1.5px dashed var(--line-2);transition:all 0.25s cubic-bezier(0.4,0,0.2,1);margin-bottom:1.25rem;}
+/* WELCOME-BACK BANNER */
+.welcome-back{
+  background:linear-gradient(135deg, var(--faro-soft), var(--lavender-soft));
+  border:1px solid var(--line);border-radius:var(--r-lg);
+  padding:14px 18px;margin-bottom:1.25rem;
+  font-family:var(--serif);font-size:14px;font-style:italic;color:var(--ink-2);
+  text-align:center;line-height:1.5;
+}
+.welcome-back-emphasis{font-weight:500;font-style:normal;color:var(--faro);}
+
+/* UPLOAD ZONE - now supports multiple */
+.upload-card{background:var(--surface);border-radius:var(--r-xl);padding:2rem 1.5rem;text-align:center;cursor:pointer;border:1.5px dashed var(--line-2);transition:all 0.25s cubic-bezier(0.4,0,0.2,1);margin-bottom:1.25rem;}
 .upload-card:hover,.upload-card.drag{border-color:var(--faro-mid);background:var(--faro-glow);transform:translateY(-2px);box-shadow:var(--shadow);}
-.upload-icon-wrap{width:64px;height:64px;border-radius:50%;background:var(--faro-soft);display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem;transition:transform 0.25s;}
+.upload-icon-wrap{width:56px;height:56px;border-radius:50%;background:var(--faro-soft);display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;transition:transform 0.25s;}
 .upload-card:hover .upload-icon-wrap{transform:scale(1.05);}
-.upload-title{font-family:var(--serif);font-size:21px;font-weight:500;letter-spacing:-0.3px;margin-bottom:6px;}
-.upload-sub{font-size:13px;color:var(--ink-3);line-height:1.55;margin-bottom:1.25rem;max-width:380px;margin-left:auto;margin-right:auto;}
-.fmt-row{display:flex;gap:6px;justify-content:center;margin-top:1rem;flex-wrap:wrap;}
+.upload-title{font-family:var(--serif);font-size:20px;font-weight:500;letter-spacing:-0.3px;margin-bottom:6px;}
+.upload-sub{font-size:13px;color:var(--ink-3);line-height:1.55;margin-bottom:1rem;max-width:380px;margin-left:auto;margin-right:auto;}
+.fmt-row{display:flex;gap:6px;justify-content:center;margin-top:0.75rem;flex-wrap:wrap;}
 .fmt{font-size:10px;padding:3px 10px;border:1px solid var(--line);border-radius:var(--r-pill);color:var(--ink-3);background:var(--surface);letter-spacing:0.3px;}
 input[type=file]{display:none;}
-.upload-promise{margin-top:1rem;font-size:11px;color:var(--ink-4);display:flex;align-items:center;justify-content:center;gap:5px;}
+.upload-promise{margin-top:0.875rem;font-size:11px;color:var(--ink-4);display:flex;align-items:center;justify-content:center;gap:5px;}
+
+/* STAGED FILES LIST */
+.staged-files{
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);
+  margin-bottom:1rem;overflow:hidden;display:none;
+}
+.staged-files.has-files{display:block;}
+.staged-header{
+  padding:12px 16px;border-bottom:1px solid var(--line);
+  display:flex;justify-content:space-between;align-items:center;
+}
+.staged-title{font-size:12px;font-weight:600;color:var(--ink);letter-spacing:0.2px;}
+.staged-count{font-size:11px;color:var(--ink-3);font-weight:500;}
+.staged-item{
+  padding:11px 16px;display:flex;align-items:center;gap:10px;
+  border-bottom:1px solid var(--line);
+}
+.staged-item:last-child{border-bottom:none;}
+.staged-icon{width:30px;height:30px;border-radius:8px;background:var(--faro-soft);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.staged-info{flex:1;min-width:0;}
+.staged-name{font-size:12px;font-weight:500;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.staged-meta{font-size:10px;color:var(--ink-3);margin-top:1px;}
+.staged-remove{
+  background:none;border:none;color:var(--ink-4);font-size:18px;
+  width:28px;height:28px;border-radius:50%;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.15s;
+}
+.staged-remove:hover{background:var(--rose-soft);color:var(--rose);}
+.staged-actions{padding:12px 16px;background:var(--faro-glow);}
+.btn-analyze{
+  background:var(--ink);color:#fff;border-radius:var(--r-pill);
+  padding:11px 24px;font-size:13px;font-weight:500;width:100%;
+  transition:all 0.15s;
+}
+.btn-analyze:hover{background:#000;transform:translateY(-1px);}
+.btn-analyze:disabled{opacity:0.5;cursor:not-allowed;}
 
 /* ANALYZING */
 .analyzing{background:var(--surface);border-radius:var(--r-xl);padding:3rem 2rem;text-align:center;border:1px solid var(--line);display:none;margin-bottom:1.25rem;}
@@ -108,56 +154,50 @@ input[type=file]{display:none;}
 .analyzing-title{font-family:var(--serif);font-size:21px;font-weight:500;letter-spacing:-0.3px;margin-bottom:8px;}
 .analyzing-msg{font-size:13px;color:var(--ink-3);min-height:18px;transition:opacity 0.4s;line-height:1.5;}
 
-/* ERROR */
 .error{background:var(--rose-soft);border:1px solid rgba(161,69,86,0.18);border-radius:var(--r-lg);padding:0.875rem 1.125rem;margin-bottom:1.25rem;display:none;font-size:13px;color:#6B2935;line-height:1.5;}
 .error.active{display:block;animation:fadeUp 0.3s;}
 
-/* ARCHETYPE */
-.archetype-card{background:linear-gradient(160deg, #1B3A5C 0%, #2C5680 60%, #3A6BA0 100%);border-radius:var(--r-xl);padding:2rem 1.75rem 1.5rem;margin-bottom:1.25rem;color:#fff;position:relative;overflow:hidden;box-shadow:var(--shadow-lg);}
+/* ARCHETYPE - tighter */
+.archetype-card{background:linear-gradient(160deg, #1B3A5C 0%, #2C5680 60%, #3A6BA0 100%);border-radius:var(--r-xl);padding:1.75rem 1.5rem 1.5rem;margin-bottom:1.25rem;color:#fff;position:relative;overflow:hidden;box-shadow:var(--shadow-lg);}
 .archetype-card::before{content:'';position:absolute;top:-80px;right:-80px;width:240px;height:240px;border-radius:50%;background:rgba(255,255,255,0.06);}
 .archetype-card::after{content:'';position:absolute;bottom:-60px;left:-30px;width:160px;height:160px;border-radius:50%;background:rgba(255,255,255,0.04);}
-.archetype-top{display:flex;justify-content:space-between;align-items:flex-start;position:relative;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem;}
+.archetype-top{display:flex;justify-content:space-between;align-items:flex-start;position:relative;flex-wrap:wrap;gap:1rem;}
 .archetype-period{font-size:11px;color:rgba(255,255,255,0.55);letter-spacing:0.6px;text-transform:uppercase;margin-bottom:6px;}
-.archetype-name{font-family:var(--serif);font-size:30px;font-weight:500;line-height:1.15;letter-spacing:-0.8px;margin-bottom:10px;}
-.archetype-tagline{font-size:14px;color:rgba(255,255,255,0.85);line-height:1.55;font-style:italic;font-family:var(--serif);}
+.archetype-name{font-family:var(--serif);font-size:28px;font-weight:500;line-height:1.15;letter-spacing:-0.7px;margin-bottom:6px;}
+.archetype-tagline{font-size:13px;color:rgba(255,255,255,0.85);line-height:1.5;font-style:italic;font-family:var(--serif);}
 .score-cluster{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0;}
 .level-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.18);padding:5px 11px;border-radius:var(--r-pill);font-size:10px;font-weight:600;letter-spacing:0.4px;text-transform:uppercase;backdrop-filter:blur(10px);}
 .level-num{background:rgba(255,255,255,0.2);padding:1px 6px;border-radius:var(--r-sm);font-family:var(--serif);}
-.score-circle-mod{width:78px;height:78px;border-radius:50%;background:rgba(255,255,255,0.08);border:1.5px solid rgba(255,255,255,0.18);display:flex;flex-direction:column;align-items:center;justify-content:center;backdrop-filter:blur(12px);}
-.score-num-mod{font-family:var(--serif);font-size:30px;font-weight:500;line-height:1;letter-spacing:-0.5px;}
+.score-circle-mod{width:74px;height:74px;border-radius:50%;background:rgba(255,255,255,0.08);border:1.5px solid rgba(255,255,255,0.18);display:flex;flex-direction:column;align-items:center;justify-content:center;backdrop-filter:blur(12px);}
+.score-num-mod{font-family:var(--serif);font-size:28px;font-weight:500;line-height:1;letter-spacing:-0.4px;}
 .score-lbl-mod{font-size:9px;color:rgba(255,255,255,0.65);letter-spacing:0.5px;text-transform:uppercase;margin-top:3px;}
-.archetype-evidence{background:rgba(255,255,255,0.07);border-radius:var(--r);padding:0.875rem 1rem;font-size:12.5px;line-height:1.6;color:rgba(255,255,255,0.82);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.06);}
-.evidence-label{font-size:9px;font-weight:600;color:rgba(187,218,240,0.95);letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;}
 
-/* XP BANNER */
+/* XP */
 .xp-banner{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-pill);padding:8px 16px;margin-bottom:1.25rem;font-size:12px;font-weight:500;color:var(--ink-2);box-shadow:var(--shadow-sm);}
 .xp-emoji{font-size:14px;}
 .xp-amount{color:var(--faro);font-weight:600;}
 
 /* SECTIONS */
-.sec{margin-top:2rem;}
-.sec-h{font-family:var(--serif);font-size:18px;font-weight:500;letter-spacing:-0.3px;margin-bottom:0.875rem;display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:6px;}
-.sec-sub{font-size:11px;color:var(--ink-3);font-style:italic;font-family:var(--sans);font-weight:400;}
+.sec{margin-top:1.75rem;}
+.sec-h{font-family:var(--serif);font-size:17px;font-weight:500;letter-spacing:-0.3px;margin-bottom:0.875rem;color:var(--ink);}
 
-/* DIAGNOSIS */
+/* DIAGNOSIS - just headline + brief body */
 .diagnosis-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:1.25rem 1.4rem;}
 .diag-quote{font-family:var(--serif);font-size:18px;font-weight:500;letter-spacing:-0.3px;line-height:1.4;color:var(--ink);margin-bottom:8px;font-style:italic;}
-.diag-body{font-size:13px;color:var(--ink-2);line-height:1.65;}
+.diag-body{font-size:13px;color:var(--ink-2);line-height:1.6;}
 
-/* PATTERNS */
+/* PATTERNS - tighter */
 .patterns{display:flex;flex-direction:column;gap:8px;}
-.pattern{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:14px 16px;display:flex;gap:12px;align-items:flex-start;transition:all 0.2s;}
+.pattern{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:13px 16px;display:flex;gap:12px;align-items:center;transition:all 0.2s;}
 .pattern:hover{border-color:var(--line-2);transform:translateY(-1px);box-shadow:var(--shadow-sm);}
 .pattern-icon{width:36px;height:36px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:18px;background:var(--lavender-soft);}
 .pattern-body{flex:1;min-width:0;}
-.pattern-title{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:3px;letter-spacing:-0.1px;}
-.pattern-meaning{font-size:12.5px;color:var(--ink-2);line-height:1.55;}
-.pattern-evidence{font-size:11px;color:var(--ink-3);margin-top:5px;font-family:'SF Mono',Menlo,monospace;}
+.pattern-title{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:2px;letter-spacing:-0.1px;}
+.pattern-meaning{font-size:12.5px;color:var(--ink-2);line-height:1.5;}
 
 /* METRICS */
 .metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;}
-.metric{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:13px 15px;transition:transform 0.2s;}
-.metric:hover{transform:translateY(-1px);box-shadow:var(--shadow-sm);}
+.metric{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:13px 15px;}
 .metric-lbl{font-size:10px;color:var(--ink-3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;font-weight:500;}
 .metric-val{font-family:var(--serif);font-size:24px;font-weight:500;letter-spacing:-0.4px;color:var(--ink);line-height:1;}
 .metric-sub{font-size:11px;color:var(--ink-3);margin-top:5px;}
@@ -180,13 +220,11 @@ input[type=file]{display:none;}
 .cats{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden;}
 .cat{display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:1px solid var(--line);cursor:pointer;transition:background 0.2s;}
 .cat:last-child{border-bottom:none;}
-.cat:hover{background:var(--faro-glow);}
-.cat.open{background:var(--faro-glow);}
+.cat:hover,.cat.open{background:var(--faro-glow);}
 .cat-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
 .cat-info{flex:1;min-width:0;}
 .cat-name{font-size:13px;font-weight:500;color:var(--ink);}
 .cat-count{font-size:11px;color:var(--ink-4);font-weight:400;margin-left:4px;}
-.cat-note{font-size:11px;color:var(--ink-3);font-style:italic;margin-top:2px;}
 .cat-bar-wrap{flex:1;height:5px;background:#F1EFEC;border-radius:3px;overflow:hidden;max-width:120px;}
 .cat-bar{height:100%;border-radius:3px;transition:width 1s cubic-bezier(0.4,0,0.2,1);}
 .cat-pct{font-size:11px;color:var(--ink-3);min-width:32px;text-align:right;font-weight:500;}
@@ -199,29 +237,28 @@ input[type=file]{display:none;}
 .cat-merchant{display:flex;justify-content:space-between;padding:4px 0;color:var(--ink-2);}
 @keyframes slideDown{from{opacity:0;max-height:0;}to{opacity:1;max-height:200px;}}
 
-/* STRENGTHS */
+/* STRENGTHS - tighter */
 .strengths{display:flex;flex-direction:column;gap:8px;}
-.strength{background:var(--sage-soft);border:1px solid rgba(76,113,89,0.15);border-radius:var(--r-lg);padding:14px 16px;display:flex;gap:12px;align-items:flex-start;}
-.strength-check{width:28px;height:28px;border-radius:50%;background:var(--sage);display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;font-size:14px;font-weight:600;}
+.strength{background:var(--sage-soft);border:1px solid rgba(76,113,89,0.15);border-radius:var(--r-lg);padding:12px 16px;display:flex;gap:12px;align-items:center;}
+.strength-check{width:26px;height:26px;border-radius:50%;background:var(--sage);display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;font-size:13px;font-weight:600;}
 .strength-body{flex:1;}
-.strength-title{font-size:13px;font-weight:600;color:#26402C;margin-bottom:3px;}
-.strength-text{font-size:12.5px;color:#2C4834;line-height:1.55;}
+.strength-title{font-size:13px;font-weight:600;color:#26402C;margin-bottom:2px;}
+.strength-text{font-size:12px;color:#2C4834;line-height:1.5;}
 
-/* GROWTH EDGE */
-.growth-card{background:linear-gradient(135deg, var(--lavender-soft) 0%, var(--faro-soft) 100%);border:1px solid rgba(107,93,143,0.15);border-radius:var(--r-lg);padding:1.5rem 1.4rem;}
+/* GROWTH EDGE - one clear invitation */
+.growth-card{background:linear-gradient(135deg, var(--lavender-soft) 0%, var(--faro-soft) 100%);border:1px solid rgba(107,93,143,0.15);border-radius:var(--r-lg);padding:1.4rem 1.4rem;}
 .growth-kicker{font-size:10px;font-weight:600;color:var(--lavender);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;}
-.growth-headline{font-family:var(--serif);font-size:20px;font-weight:500;letter-spacing:-0.4px;margin-bottom:8px;line-height:1.3;color:#342C4B;}
-.growth-body{font-size:13px;color:var(--ink-2);line-height:1.6;margin-bottom:1rem;}
+.growth-headline{font-family:var(--serif);font-size:20px;font-weight:500;letter-spacing:-0.4px;margin-bottom:1rem;line-height:1.3;color:#342C4B;}
 .experiment-card{background:rgba(255,255,255,0.7);border:1px dashed rgba(107,93,143,0.3);border-radius:var(--r);padding:0.875rem 1rem;}
 .experiment-label{font-size:10px;font-weight:600;color:var(--lavender);letter-spacing:0.6px;text-transform:uppercase;margin-bottom:5px;display:flex;align-items:center;gap:5px;}
-.experiment-text{font-size:12.5px;color:var(--ink-2);line-height:1.6;}
+.experiment-text{font-size:12.5px;color:var(--ink-2);line-height:1.55;}
 
 /* QUESTS */
 .quests{display:flex;flex-direction:column;gap:8px;}
-.quest{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:14px 16px;display:flex;gap:12px;align-items:center;cursor:pointer;transition:all 0.2s;position:relative;overflow:hidden;}
+.quest{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:13px 16px;display:flex;gap:12px;align-items:center;cursor:pointer;transition:all 0.2s;position:relative;overflow:hidden;}
 .quest:hover{transform:translateY(-1px);box-shadow:var(--shadow);border-color:var(--line-2);}
 .quest.completed{background:var(--sage-soft);border-color:rgba(76,113,89,0.2);}
-.quest-icon-wrap{width:42px;height:42px;border-radius:var(--r);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:20px;background:var(--faro-soft);}
+.quest-icon-wrap{width:40px;height:40px;border-radius:var(--r);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:19px;background:var(--faro-soft);}
 .quest.completed .quest-icon-wrap{background:var(--sage);color:#fff;}
 .quest-body{flex:1;min-width:0;}
 .quest-title{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:2px;letter-spacing:-0.1px;}
@@ -231,8 +268,18 @@ input[type=file]{display:none;}
 .quest-xp{font-size:10px;font-weight:600;color:var(--faro);background:var(--faro-soft);padding:2px 8px;border-radius:var(--r-pill);letter-spacing:0.3px;}
 .quest-diff{font-size:9px;color:var(--ink-4);text-transform:uppercase;letter-spacing:0.4px;font-weight:500;}
 
-/* CLOSING */
-.closing{font-family:var(--serif);font-style:italic;font-size:16px;text-align:center;color:var(--ink-2);line-height:1.55;padding:2rem 1rem 0;max-width:480px;margin:0 auto;}
+/* CONTINUITY MESSAGE - the closing */
+.continuity-card{
+  background:linear-gradient(135deg, #1B3A5C 0%, #2C5680 100%);
+  border-radius:var(--r-xl);padding:1.75rem 1.5rem;margin-top:1.75rem;
+  text-align:center;color:#fff;position:relative;overflow:hidden;
+}
+.continuity-card::before{content:'';position:absolute;top:-50px;left:-50px;width:160px;height:160px;border-radius:50%;background:rgba(255,255,255,0.04);}
+.continuity-kicker{font-size:9px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:#85B7EB;margin-bottom:8px;position:relative;}
+.continuity-msg{
+  font-family:var(--serif);font-size:18px;font-weight:500;line-height:1.4;
+  letter-spacing:-0.3px;color:#fff;font-style:italic;position:relative;
+}
 
 /* FOOTER */
 .foot{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--line);}
@@ -246,24 +293,26 @@ input[type=file]{display:none;}
   .login-card{padding:1.5rem 1.25rem;}
   .login-logo{font-size:36px;}
   .login-title{font-size:21px;}
-  .upload-card{padding:2rem 1.25rem;}
+  .upload-card{padding:1.75rem 1.25rem;}
   .archetype-card{padding:1.5rem 1.25rem 1.25rem;}
-  .archetype-name{font-size:24px;}
+  .archetype-name{font-size:23px;}
   .archetype-top{gap:0.75rem;}
   .score-cluster{flex-direction:row;align-items:center;align-self:stretch;justify-content:space-between;}
-  .score-circle-mod{width:64px;height:64px;}
-  .score-num-mod{font-size:24px;}
+  .score-circle-mod{width:62px;height:62px;}
+  .score-num-mod{font-size:23px;}
   .stats-bar{gap:6px;}
   .stat-value{font-size:16px;}
   .cat-bar-wrap{display:none;}
   .cf-msg{text-align:left;}
   .growth-headline{font-size:17px;}
   .diag-quote{font-size:16px;}
+  .continuity-msg{font-size:16px;}
 }
 </style>
 </head>
 <body>
 
+<!-- LOGIN -->
 <div class="screen login-page active" id="loginScreen">
   <div class="login-brand">
     <div class="beacon"><div class="b-glow"></div><div class="b-top"></div><div class="b-base"></div></div>
@@ -272,7 +321,7 @@ input[type=file]{display:none;}
   </div>
   <div class="login-card">
     <div class="login-title">Welcome.</div>
-    <div class="login-sub">Faro reads your bank statement and reveals the behaviors and feelings shaping your money. No accounts. Nothing stored.</div>
+    <div class="login-sub">Faro reads your statements and reveals the behaviors shaping your money. Small steps, every month.</div>
     <div class="field">
       <label class="field-label">First name</label>
       <input class="field-input" type="text" id="loginName" placeholder="What should we call you?" autocomplete="given-name" autocapitalize="words">
@@ -281,7 +330,7 @@ input[type=file]{display:none;}
       <label class="field-label">Email</label>
       <input class="field-input" type="email" id="loginEmail" placeholder="you@example.com" autocomplete="email">
     </div>
-    <button class="btn-primary" id="loginBtn" onclick="handleLogin()">Begin →</button>
+    <button class="btn-primary" onclick="handleLogin()">Begin →</button>
     <div class="login-foot">By continuing, you agree to our gentle approach to your data.</div>
   </div>
   <div class="login-promise">
@@ -291,6 +340,7 @@ input[type=file]{display:none;}
   </div>
 </div>
 
+<!-- APP -->
 <div class="screen" id="appScreen">
 <div class="page">
   <header class="app-header">
@@ -304,27 +354,43 @@ input[type=file]{display:none;}
     </div>
   </header>
 
+  <!-- Welcome-back banner for returning users -->
+  <div class="welcome-back" id="welcomeBack" style="display:none;"></div>
+
   <div class="stats-bar" id="statsBar">
     <div class="stat"><div class="stat-value" id="statXP">0</div><div class="stat-label">Total XP</div></div>
     <div class="stat"><div class="stat-value" id="statLevel">1</div><div class="stat-label">Level</div></div>
     <div class="stat"><div class="stat-value" id="statReports">0</div><div class="stat-label">Reports</div></div>
   </div>
 
+  <!-- Upload area (multi-file capable) -->
   <div class="upload-card" id="upload" onclick="document.getElementById('fileIn').click()">
     <div class="upload-icon-wrap">
-      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-        <rect x="4" y="6" width="13" height="18" rx="2.5" stroke="#2C5680" stroke-width="1.5"/>
-        <path d="M10.5 12v6.5M8 14.5l2.5-2.5 2.5 2.5" stroke="#2C5680" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        <circle cx="22" cy="7" r="4.5" fill="#EDF2F7" stroke="#2C5680" stroke-width="1.5"/>
-        <path d="M22 5v4M20 7h4" stroke="#2C5680" stroke-width="1.5" stroke-linecap="round"/>
+      <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+        <rect x="3" y="5" width="13" height="17" rx="2.5" stroke="#2C5680" stroke-width="1.5"/>
+        <rect x="6" y="2" width="13" height="17" rx="2.5" stroke="#2C5680" stroke-width="1.5" stroke-opacity="0.5" fill="white"/>
+        <rect x="9" y="-1" width="13" height="17" rx="2.5" stroke="#2C5680" stroke-width="1.5" stroke-opacity="0.3" fill="white"/>
+        <path d="M14 10v6M11.5 13l2.5-2.5 2.5 2.5" stroke="#2C5680" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" transform="translate(0,1)"/>
       </svg>
     </div>
-    <div class="upload-title">Share a statement</div>
-    <div class="upload-sub">Drop a PDF, CSV, or text file. We'll listen carefully and reflect what we hear back to you.</div>
-    <button class="btn-primary" style="max-width:200px;" onclick="event.stopPropagation();document.getElementById('fileIn').click()">Choose file</button>
-    <input type="file" id="fileIn" accept=".pdf,.csv,.txt" onchange="handleFile(event)">
+    <div class="upload-title">Share your statements</div>
+    <div class="upload-sub">Add one or more — checking, savings, credit cards. The more we see, the fuller the picture.</div>
+    <button class="btn-primary" style="max-width:200px;" onclick="event.stopPropagation();document.getElementById('fileIn').click()">Choose files</button>
+    <input type="file" id="fileIn" accept=".pdf,.csv,.txt" multiple onchange="handleFileSelect(event)">
     <div class="fmt-row"><span class="fmt">PDF</span><span class="fmt">CSV</span><span class="fmt">TXT</span></div>
     <div class="upload-promise">🔒 Analyzed in memory · Never stored</div>
+  </div>
+
+  <!-- Staged files queue -->
+  <div class="staged-files" id="stagedFiles">
+    <div class="staged-header">
+      <div class="staged-title">Ready to analyze</div>
+      <div class="staged-count" id="stagedCount">0 files</div>
+    </div>
+    <div id="stagedList"></div>
+    <div class="staged-actions">
+      <button class="btn-analyze" id="analyzeBtn" onclick="analyzeAll()">Analyze together →</button>
+    </div>
   </div>
 
   <div class="analyzing" id="analyzing">
@@ -344,6 +410,7 @@ const USER_KEY = 'faro_user';
 const STATS_KEY = 'faro_stats';
 let user = JSON.parse(localStorage.getItem(USER_KEY) || 'null');
 let stats = JSON.parse(localStorage.getItem(STATS_KEY) || JSON.stringify({ xp:0, level:1, reports:0 }));
+let stagedFiles = []; // queue of files to analyze together
 
 function saveUser(u) { localStorage.setItem(USER_KEY, JSON.stringify(u)); user = u; }
 function saveStats() { localStorage.setItem(STATS_KEY, JSON.stringify(stats)); refreshStatsHUD(); }
@@ -371,6 +438,13 @@ function goToApp() {
   document.getElementById('userNameDisplay').textContent = user.name;
   document.getElementById('userAvatar').textContent = user.name[0].toUpperCase();
   refreshStatsHUD();
+
+  // Show welcome-back if returning
+  if (stats.reports > 0) {
+    const wb = document.getElementById('welcomeBack');
+    wb.style.display = 'block';
+    wb.innerHTML = `Welcome back, <span class="welcome-back-emphasis">${user.name}</span>. ${stats.reports === 1 ? "Let's see your next chapter." : `${stats.reports} reports in. Keep showing up.`}`;
+  }
 }
 
 function logout() {
@@ -386,12 +460,12 @@ function logout() {
 document.getElementById('loginEmail').addEventListener('keydown', e => { if (e.key === 'Enter') handleLogin(); });
 document.getElementById('loginName').addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('loginEmail').focus(); });
 
-// LOADING
+// LOADING MESSAGES
 const loadingMessages = [
   "Reading your story...",
   "Noticing the patterns...",
   "Listening between the lines...",
-  "Finding what your money is telling us...",
+  "Bringing the picture together...",
   "Reflecting on what we see..."
 ];
 let msgIndex = 0, msgInterval;
@@ -406,7 +480,7 @@ function rotateMessages() {
 function stopMessages() { clearInterval(msgInterval); }
 
 // ────────────────────────────────────────────
-// PDF EXTRACTION IN BROWSER (the new piece)
+// PDF EXTRACTION IN BROWSER
 // ────────────────────────────────────────────
 async function extractPDFTextInBrowser(file) {
   const arrayBuffer = await file.arrayBuffer();
@@ -415,14 +489,12 @@ async function extractPDFTextInBrowser(file) {
   for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
     const page = await pdf.getPage(pageNum);
     const content = await page.getTextContent();
-    // Group items by their y-coordinate to reconstruct lines
     const lines = {};
     for (const item of content.items) {
       const y = Math.round(item.transform[5]);
       if (!lines[y]) lines[y] = [];
       lines[y].push({ x: item.transform[4], text: item.str });
     }
-    // Sort each line by x and join
     const yKeys = Object.keys(lines).map(Number).sort((a, b) => b - a);
     for (const y of yKeys) {
       const line = lines[y].sort((a, b) => a.x - b.x).map(i => i.text).join(' ');
@@ -432,39 +504,113 @@ async function extractPDFTextInBrowser(file) {
   return fullText;
 }
 
+async function extractFileText(file) {
+  const isPDF = file.type === 'application/pdf' || file.name.endsWith('.pdf');
+  if (isPDF) return await extractPDFTextInBrowser(file);
+  return await file.text();
+}
+
+function guessAccountLabel(filename) {
+  const lower = filename.toLowerCase();
+  if (lower.includes('credit') || lower.includes('card')) return 'Credit Card';
+  if (lower.includes('check')) return 'Checking';
+  if (lower.includes('saving')) return 'Savings';
+  if (lower.includes('chime')) return 'Chime';
+  if (lower.includes('chase')) return 'Chase';
+  if (lower.includes('amex')) return 'Amex';
+  if (lower.includes('apple')) return 'Apple Card';
+  // Fallback: clean up the filename
+  return filename.replace(/\.(pdf|csv|txt)$/i, '').replace(/[-_]/g, ' ').slice(0, 30);
+}
+
 // ────────────────────────────────────────────
-// MAIN FILE HANDLER
+// MULTI-FILE STAGING
 // ────────────────────────────────────────────
-async function handleFile(e) {
-  const file = e.target.files[0];
-  if (!file) return;
-  if (file.size > 10 * 1024 * 1024) {
-    showError("That file is large. Please try one under 10MB.");
+async function handleFileSelect(e) {
+  const files = Array.from(e.target.files);
+  if (files.length === 0) return;
+
+  for (const file of files) {
+    if (file.size > 10 * 1024 * 1024) {
+      showError(`"${file.name}" is too large. Files must be under 10MB.`);
+      continue;
+    }
+    // Guard against duplicates by name+size
+    if (stagedFiles.some(s => s.name === file.name && s.size === file.size)) continue;
+    stagedFiles.push({
+      name: file.name,
+      size: file.size,
+      label: guessAccountLabel(file.name),
+      file: file
+    });
+  }
+  document.getElementById('fileIn').value = '';
+  renderStagedFiles();
+}
+
+function renderStagedFiles() {
+  const container = document.getElementById('stagedFiles');
+  const list = document.getElementById('stagedList');
+  const count = document.getElementById('stagedCount');
+
+  if (stagedFiles.length === 0) {
+    container.classList.remove('has-files');
     return;
   }
+  container.classList.add('has-files');
+  count.textContent = `${stagedFiles.length} ${stagedFiles.length === 1 ? 'file' : 'files'}`;
+
+  list.innerHTML = stagedFiles.map((f, i) => `
+    <div class="staged-item">
+      <div class="staged-icon">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <rect x="2" y="1.5" width="9" height="11" rx="1.5" stroke="#2C5680" stroke-width="1.2"/>
+          <line x1="4" y1="5" x2="9" y2="5" stroke="#2C5680" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="4" y1="7" x2="9" y2="7" stroke="#2C5680" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="4" y1="9" x2="7" y2="9" stroke="#2C5680" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="staged-info">
+        <div class="staged-name">${f.label}</div>
+        <div class="staged-meta">${f.name} · ${(f.size / 1024).toFixed(0)} KB</div>
+      </div>
+      <button class="staged-remove" onclick="removeStagedFile(${i})" aria-label="Remove">×</button>
+    </div>
+  `).join('');
+}
+
+function removeStagedFile(idx) {
+  stagedFiles.splice(idx, 1);
+  renderStagedFiles();
+}
+
+// ────────────────────────────────────────────
+// ANALYZE ALL STAGED FILES
+// ────────────────────────────────────────────
+async function analyzeAll() {
+  if (stagedFiles.length === 0) return;
   showAnalyzing();
 
   try {
-    let statementText;
-    const isPDF = file.type === 'application/pdf' || file.name.endsWith('.pdf');
-    
-    if (isPDF) {
-      // Browser-side extraction — fast, free, no server time
-      statementText = await extractPDFTextInBrowser(file);
-    } else {
-      statementText = await file.text();
-    }
+    // Extract text from each file in parallel
+    const extractions = await Promise.all(stagedFiles.map(async sf => ({
+      label: sf.label,
+      text: await extractFileText(sf.file)
+    })));
 
-    if (!statementText || statementText.length < 20) {
-      throw new Error("We couldn't read text from this file. If it's a scanned PDF, try a CSV or text export from your bank instead.");
+    // Validate
+    const valid = extractions.filter(e => e.text && e.text.length > 20);
+    if (valid.length === 0) {
+      throw new Error("We couldn't read text from these files. If they're scanned PDFs, try CSV exports instead.");
     }
 
     const response = await fetch('/api/analyze', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        statementText: statementText,
-        userName: user?.name || 'friend'
+        statements: valid,
+        userName: user?.name || 'friend',
+        isReturning: stats.reports > 0
       })
     });
 
@@ -472,7 +618,7 @@ async function handleFile(e) {
     let data;
     try { data = JSON.parse(text); }
     catch {
-      if (response.status === 504 || text.includes('timeout') || text.includes('error o')) {
+      if (response.status === 504 || text.includes('timeout')) {
         throw new Error("That took longer than expected. Try again in a moment.");
       }
       throw new Error("Something went wrong on our end. Please try again.");
@@ -484,6 +630,7 @@ async function handleFile(e) {
     stats.level = Math.max(stats.level, data.report.level || 1);
     saveStats();
 
+    stagedFiles = []; // clear queue
     renderReport(data.report);
 
   } catch (err) {
@@ -492,13 +639,15 @@ async function handleFile(e) {
 }
 
 // ────────────────────────────────────────────
-// RENDER REPORT
+// RENDER REPORT - tighter, continuity-focused
 // ────────────────────────────────────────────
 function renderReport(r) {
   stopMessages();
   document.getElementById('analyzing').classList.remove('active');
   document.getElementById('upload').style.display = 'none';
+  document.getElementById('stagedFiles').classList.remove('has-files');
   document.getElementById('statsBar').style.display = 'none';
+  document.getElementById('welcomeBack').style.display = 'none';
 
   const cats = r.categories || [];
   const totalSpent = r.metrics?.totalSpent || cats.reduce((s,c) => s+c.amount, 0) || 1;
@@ -529,7 +678,6 @@ function renderReport(r) {
         <div class="cat-dot" style="background:${c.color}"></div>
         <div class="cat-info">
           <div class="cat-name">${c.name}<span class="cat-count"> · ${c.transactionCount}</span></div>
-          ${c.behavioralNote ? `<div class="cat-note">${c.behavioralNote}</div>` : ''}
         </div>
         <div class="cat-bar-wrap"><div class="cat-bar" style="width:${barW}%;background:${c.color}"></div></div>
         <div class="cat-pct" style="color:${c.color}">${pct}%</div>
@@ -549,7 +697,6 @@ function renderReport(r) {
       <div class="pattern-body">
         <div class="pattern-title">${p.title}</div>
         <div class="pattern-meaning">${p.meaning}</div>
-        ${p.evidence ? `<div class="pattern-evidence">→ ${p.evidence}</div>` : ''}
       </div>
     </div>`).join('');
 
@@ -575,15 +722,18 @@ function renderReport(r) {
       </div>
     </div>`).join('');
 
+  const accountInfo = r._accountCount > 1 ? ` · ${r._accountCount} accounts combined` : '';
+
   document.getElementById('report').innerHTML = `
     <div class="xp-banner">
       <span class="xp-emoji">✨</span>
       <span>You earned <span class="xp-amount">+${r.xpEarned || 100} XP</span> for showing up</span>
     </div>
+
     <section class="archetype-card">
       <div class="archetype-top">
         <div>
-          <div class="archetype-period">${r.period} · ${r.bank}${r._txCount ? ' · ' + r._txCount + ' transactions' : ''}</div>
+          <div class="archetype-period">${r.period}${accountInfo}</div>
           <div class="archetype-name">${r.archetype?.name || 'Your Money Mind'}</div>
           <div class="archetype-tagline">${r.archetype?.tagline || ''}</div>
         </div>
@@ -598,22 +748,21 @@ function renderReport(r) {
           </div>
         </div>
       </div>
-      <div class="archetype-evidence">
-        <div class="evidence-label">What we saw</div>
-        ${r.archetype?.evidence || r.diagnosisBody}
-      </div>
     </section>
+
     <section class="sec">
-      <h3 class="sec-h">The story your money is telling <span class="sec-sub">a behavioral read</span></h3>
+      <h3 class="sec-h">The story your money is telling</h3>
       <div class="diagnosis-card">
         <div class="diag-quote">"${r.diagnosisHeadline}"</div>
         <div class="diag-body">${r.diagnosisBody}</div>
       </div>
     </section>
+
     ${patternsHTML ? `<section class="sec">
-      <h3 class="sec-h">Patterns we noticed <span class="sec-sub">behavior over numbers</span></h3>
+      <h3 class="sec-h">Patterns we noticed</h3>
       <div class="patterns">${patternsHTML}</div>
     </section>` : ''}
+
     <section class="sec">
       <h3 class="sec-h">The shape of your month</h3>
       <div class="cf-card">
@@ -627,45 +776,54 @@ function renderReport(r) {
         <div class="cf-bar">${cfSegs}</div>
         <div class="cf-legend">
           <span><span class="cf-leg-dot" style="background:#C8692D"></span>Spent</span>
-          ${cf.sentToOthers > 0 ? `<span><span class="cf-leg-dot" style="background:#B0791B"></span>Shared with people</span>` : ''}
+          ${cf.sentToOthers > 0 ? `<span><span class="cf-leg-dot" style="background:#B0791B"></span>Shared</span>` : ''}
           ${leftPct > 0 ? `<span><span class="cf-leg-dot" style="background:#4C7159"></span>Remaining</span>` : ''}
         </div>
       </div>
     </section>
+
     <section class="sec">
       <h3 class="sec-h">The numbers</h3>
       <div class="metrics">
-        <div class="metric"><div class="metric-lbl">Came in</div><div class="metric-val">$${Math.round(r.metrics?.totalIncome || 0).toLocaleString()}</div><div class="metric-sub">this period</div></div>
-        <div class="metric"><div class="metric-lbl">Went out</div><div class="metric-val">$${Math.round(totalSpent).toLocaleString()}</div><div class="metric-sub">${r.metrics?.totalTransactions || 0} transactions</div></div>
-        ${r.metrics?.sentToOthers > 0 ? `<div class="metric"><div class="metric-lbl">Shared</div><div class="metric-val">$${Math.round(r.metrics.sentToOthers).toLocaleString()}</div><div class="metric-sub">with people</div></div>` : ''}
-        <div class="metric"><div class="metric-lbl">Typical purchase</div><div class="metric-val">$${Math.round(r.metrics?.avgTransaction || 0)}</div><div class="metric-sub">per transaction</div></div>
+        <div class="metric"><div class="metric-lbl">Came in</div><div class="metric-val">$${Math.round(r.metrics?.totalIncome || 0).toLocaleString()}</div></div>
+        <div class="metric"><div class="metric-lbl">Went out</div><div class="metric-val">$${Math.round(totalSpent).toLocaleString()}</div></div>
+        ${r.metrics?.sentToOthers > 0 ? `<div class="metric"><div class="metric-lbl">Shared</div><div class="metric-val">$${Math.round(r.metrics.sentToOthers).toLocaleString()}</div></div>` : ''}
+        <div class="metric"><div class="metric-lbl">Average</div><div class="metric-val">$${Math.round(r.metrics?.avgTransaction || 0)}</div></div>
       </div>
     </section>
+
     <section class="sec">
-      <h3 class="sec-h">Where your money lived <span class="sec-sub">tap to see merchants</span></h3>
+      <h3 class="sec-h">Where your money lived</h3>
       <div class="cats">${catHTML}</div>
     </section>
+
     ${strengthsHTML ? `<section class="sec">
       <h3 class="sec-h">What's quietly working</h3>
       <div class="strengths">${strengthsHTML}</div>
     </section>` : ''}
+
     ${r.growthEdge ? `<section class="sec">
       <h3 class="sec-h">Your growth edge</h3>
       <div class="growth-card">
         <div class="growth-kicker">An invitation</div>
         <div class="growth-headline">${r.growthEdge.headline}</div>
-        <div class="growth-body">${r.growthEdge.body}</div>
         ${r.growthEdge.experiment ? `<div class="experiment-card">
-          <div class="experiment-label">🧪 An experiment to try</div>
+          <div class="experiment-label">🧪 Try this week</div>
           <div class="experiment-text">${r.growthEdge.experiment}</div>
         </div>` : ''}
       </div>
     </section>` : ''}
+
     ${questsHTML ? `<section class="sec">
-      <h3 class="sec-h">Quests <span class="sec-sub">tap to complete · earn XP</span></h3>
+      <h3 class="sec-h">Quests</h3>
       <div class="quests">${questsHTML}</div>
     </section>` : ''}
-    ${r.closingWarmth ? `<div class="closing">${r.closingWarmth}</div>` : ''}
+
+    ${r.continuityMessage ? `<div class="continuity-card">
+      <div class="continuity-kicker">Keep going</div>
+      <div class="continuity-msg">${r.continuityMessage}</div>
+    </div>` : ''}
+
     <div class="foot">
       <button class="btn-ghost" onclick="resetApp()">← Analyze another</button>
       <button class="btn-ghost" onclick="window.print()">Save as PDF</button>
@@ -698,7 +856,9 @@ function completeQuest(i, xp) {
 function showAnalyzing() {
   document.getElementById('error').classList.remove('active');
   document.getElementById('upload').style.display = 'none';
+  document.getElementById('stagedFiles').classList.remove('has-files');
   document.getElementById('statsBar').style.display = 'none';
+  document.getElementById('welcomeBack').style.display = 'none';
   document.getElementById('analyzing').classList.add('active');
   document.getElementById('analyzingMsg').textContent = loadingMessages[0];
   msgIndex = 0;
@@ -709,18 +869,22 @@ function showError(msg) {
   stopMessages();
   document.getElementById('analyzing').classList.remove('active');
   document.getElementById('upload').style.display = 'block';
+  if (stagedFiles.length > 0) document.getElementById('stagedFiles').classList.add('has-files');
   document.getElementById('statsBar').style.display = 'grid';
   const el = document.getElementById('error');
   el.textContent = msg;
   el.classList.add('active');
-  document.getElementById('fileIn').value = '';
 }
 
 function resetApp() {
   document.getElementById('report').innerHTML = '';
   document.getElementById('upload').style.display = 'block';
   document.getElementById('statsBar').style.display = 'grid';
-  document.getElementById('fileIn').value = '';
+  if (stats.reports > 0) {
+    const wb = document.getElementById('welcomeBack');
+    wb.style.display = 'block';
+    wb.innerHTML = `Welcome back, <span class="welcome-back-emphasis">${user.name}</span>. ${stats.reports === 1 ? "Let's see your next chapter." : `${stats.reports} reports in. Keep showing up.`}`;
+  }
   document.getElementById('error').classList.remove('active');
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -731,8 +895,10 @@ up.addEventListener('dragleave', () => up.classList.remove('drag'));
 up.addEventListener('drop', e => {
   e.preventDefault();
   up.classList.remove('drag');
-  const file = e.dataTransfer.files[0];
-  if (file) { document.getElementById('fileIn').files = e.dataTransfer.files; handleFile({ target: { files: [file] } }); }
+  const files = Array.from(e.dataTransfer.files);
+  if (files.length > 0) {
+    handleFileSelect({ target: { files: files } });
+  }
 });
 </script>
 </body>
